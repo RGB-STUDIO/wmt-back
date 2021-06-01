@@ -1,0 +1,56 @@
+{
+  "name": "wmt-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "babel.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node -r dotenv/config build/src/bin/www.js",
+    "start:dev": "npm run build && node -r dotenv/config build/src/bin/www.js",
+    "build": "NODE_ENV=development npx -p typescript tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RGB-STUDIO/wmt-back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RGB-STUDIO/wmt-back/issues"
+  },
+  "homepage": "https://github.com/RGB-STUDIO/wmt-back#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http-terminator": "^3.0.0",
+    "intern": "^4.8.0",
+    "inversify": "^5.1.1",
+    "module-alias": "^2.2.2",
+    "pg": "^8.6.0",
+    "reflect-metadata": "^0.1.13",
+    "superstruct": "^0.15.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.12",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^15.6.1",
+    "@types/pg": "^8.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "nodemon": "^2.0.7",
+    "ts-node": "^8.10.2",
+    "typescript": "^4.3.2"
+  }
+}
