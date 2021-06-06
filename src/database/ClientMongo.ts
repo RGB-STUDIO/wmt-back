@@ -36,7 +36,7 @@ export default class ClientMongo {
   }
 
   async startTransaction():Promise<void> {
-    await this.session.startTransaction();
+    await this.session.startTransaction({ readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } });
   }
 
   async commitTransaction():Promise<void> {
@@ -46,8 +46,4 @@ export default class ClientMongo {
   async abortTransaction():Promise<void> {
     await this.session.abortTransaction();
   }
-
-  // database() {
-  //   return this.clientMongo.db('testeo');
-  // }
 }

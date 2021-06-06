@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import ClientMongo, { MongoClientProviderInterface } from '@database/ClientMongo';
 import { RegisterServiceInterface } from '@root/kiddkeo/user/application/Register/Service/RegisterService.interface';
 import TYPES from '@root/types';
-import { Db, MongoClient } from 'mongodb';
+import { Db } from 'mongodb';
 import { RegisterControllerInterface } from '@root/kiddkeo/user/application/Register/Controller/RegisterController.interface';
 import { Register } from '@root/kiddkeo/user/domain/model/Register/Register';
 import { RegisterDto } from '@root/kiddkeo/user/domain/model/Register/Register.dto';
