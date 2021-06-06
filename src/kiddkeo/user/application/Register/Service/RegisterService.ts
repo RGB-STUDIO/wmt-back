@@ -22,15 +22,26 @@ export class RegisterService extends ClientMongo implements RegisterServiceInter
     this.registerController = this.RegisterFactory(this.database);
   }
 
+  private async loadReferences(snapShot:unknown):Promise<Register> {
+  // return new Register(registerRecord.uid,
+  // registerRecord.firstname,
+  // registerRecord.secondName,
+  // registerRecord.surname,
+  // registerRecord.secondSurname,
+  // registerRecord.email);
+    return {} as Register;
+  }
+
   async save(schema: RegisterDto): Promise<Register> {
-    let registerRecord:Register;
+    // let registerRecord:PersonCollection;
+    let registerSnapShot:unknown;
     try {
       await this.connect();
       await this.startSession();
       await this.startTransaction();
-      registerRecord = await this.registerController.save(schema);
+      registerSnapShot = await this.registerController.save(schema);
       await this.commitTransaction();
-      return registerRecord;
+      return await this.loadReferences(registerSnapShot);
     } catch (err) {
       await this.abortTransaction();
       throw new Error('soy un error :)');

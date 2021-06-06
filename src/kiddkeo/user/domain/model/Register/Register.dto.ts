@@ -1,6 +1,14 @@
+import { PhoneDto } from '@root/kiddkeo/user/domain/model/Phones/phone.dto';
+
 export interface RegisterDto{
-  _id:string,
-  name:string,
-  lastname:string,
-  email:string
+  uid:string,
+  username:string,
+  firstname:string,
+  secondName:string,
+  surname:string,
+  secondSurname:string,
+  password?:string,
+  email:string,
+  dateOfBirth:Date,
+  phones:PhoneDto[]
 }
