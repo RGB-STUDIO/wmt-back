@@ -11,8 +11,7 @@ import { RegisterDto } from '@root/kiddkeo/user/domain/model/Register/Register.d
 export class RegisterService extends ClientMongo implements RegisterServiceInterface {
   private registerController!:RegisterControllerInterface;
 
-  constructor(@inject(TYPES.MongoClient) mongoClient:MongoClientProviderInterface,
-    @inject(TYPES.RegisterFactory)
+  constructor(@inject(TYPES.MongoClient) mongoClient:MongoClientProviderInterface, @inject(TYPES.RegisterFactory)
     private RegisterFactory:(database:Db)=>RegisterControllerInterface) {
     super(mongoClient);
   }
