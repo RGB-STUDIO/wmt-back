@@ -1,6 +1,6 @@
 export interface PackageDto{
-    uid:string,
-    titlle: string,
+    uid?:string,
+    title: string,
     price: number,
     description?: string
 }

@@ -1,6 +1,11 @@
+import { Collection } from 'mongodb'
 import { PackageDto } from '../../../domain/model/packages/package.dto'
 import { PackageCollection } from './types/PackageCollection'
 
 export interface PackageRepositoryInterface {
     save(schema:PackageDto): Promise<PackageCollection>
+    findAll():Promise<Collection[]>
+    find(schema:PackageDto):Promise<Collection>
+    update(schema:PackageDto):Promise<PackageCollection>
+    delete(schema:PackageDto):Promise<Collection>
 }
