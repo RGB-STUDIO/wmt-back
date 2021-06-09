@@ -1,3 +1,4 @@
 export const COLLECTIONS = {
-  person: 'person',
+  PERSON: 'person',
+  PACKAGE: 'package',
 };

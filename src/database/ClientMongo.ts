@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { ClientSession, Db, MongoClient } from 'mongodb';
 import TYPES from '@root/types';
+import { DATABASE_NAME } from '@root/Constants';
 
 export interface IMongoClient extends MongoClient {
 }
@@ -23,7 +24,7 @@ export default class ClientMongo {
 
   async connectMongo():Promise<MongoClient> {
     this.clientMongo = await this.clientProviderMongo();
-    this.database = this.clientMongo.db('testeo');
+    this.database = this.clientMongo.db(DATABASE_NAME);
     return this.clientMongo;
   }
 
