@@ -48,13 +48,14 @@ router.get('/package/:id', async (req:Request, res:Response, next: NextFunction)
   }
 });
 
-router.patch('/package/:id', async (req:Request, res:Response, next:NextFunction) => {
-  const { id } = req.params
+router.patch('/package', async (req:Request, res:Response, next:NextFunction) => {
   const { entity } = req.body
+
+  console.log(entity)
 
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
   try {
-    const updatePackage = await packageService.update(entity, id);
+    const updatePackage = await packageService.update(entity);
 
     res.status(201).json({
       status: 201,

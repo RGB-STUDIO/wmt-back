@@ -24,8 +24,8 @@ export class PackageController implements PackageControllerInterface {
     return this.packageRepository.find(uid);
   }
 
-  async update(schema:PackageDto, uid:string):Promise<PackageCollection> {
-    return this.packageRepository.update(schema, uid);
+  async update(schema:PackageDto):Promise<PackageCollection> {
+    return this.packageRepository.update(schema);
   }
 
   async delete(uid:string):Promise<Collection> {

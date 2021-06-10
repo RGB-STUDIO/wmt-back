@@ -77,14 +77,15 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     }
   }
 
-  async update(schema: PackageDto, uid:string): Promise<Package> {
+  async update(schema: PackageDto): Promise<Package> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
       await this.startTransaction();
-      packageSnapShot = await this.packageController.update(schema, uid);
+      packageSnapShot = await this.packageController.update(schema);
+      console.log(packageSnapShot)
       await this.commitTransaction();
       return new Package(packageSnapShot.uid,
         packageSnapShot.title,

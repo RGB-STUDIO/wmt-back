@@ -27,21 +27,12 @@ export class PackageRepository implements PackageRepositoryInterface {
       .findOne({ _id: new ObjectID(uid) });
   }
 
-  async update(schema: PackageDto, uid:string): Promise<PackageCollection> {
-/*     const packageSnapshot = await this.database.collection('package')({ _id: schema.uid }, {
+  async update(schema: PackageDto): Promise<PackageCollection> {
+    const packageSnapshot = await this.database.collection('package').updateOne({ _id: new ObjectID(schema.uid) }, {
       $set: {
         title: schema.title,
         price: schema.price,
         description: schema.description,
-      },
-    }, { returnOriginal: false });
-    return packageSnapshot.value; */
-
-    const packageSnapshot = await this.database.collection('package').updateOne({_id: new ObjectID(uid)}, {
-      $set: {
-        title: schema.title,
-        price: schema.price,
-        description: schema.description
       }
     })
 
