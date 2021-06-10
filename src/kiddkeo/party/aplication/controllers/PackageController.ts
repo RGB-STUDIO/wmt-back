@@ -16,16 +16,16 @@ export class PackageController implements PackageControllerInterface {
         return this.packageRepository.save(schema)
     }
 
-    async findAll(): Promise<Collection[]>{
+/*     async findAll(): Promise<Collection[]>{
         return this.packageRepository.findAll()
+    } */
+
+    async find(uid:string):Promise<Collection>{
+        return this.packageRepository.find(uid)
     }
 
-    async find(schema:PackageDto):Promise<Collection>{
-        return this.packageRepository.find(schema)
-    }
-
-    async update(schema:PackageDto):Promise<PackageCollection>{
-        return this.packageRepository.update(schema)
+    async update(schema:PackageDto, uid:string):Promise<PackageCollection>{
+        return this.packageRepository.update(schema, uid)
     }
 
     async delete(schema:PackageDto):Promise<Collection>{

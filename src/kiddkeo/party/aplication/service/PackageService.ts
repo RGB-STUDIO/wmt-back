@@ -35,7 +35,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       await this.startTransaction();
       packageSnapShot = await this.packageController.save(schema);
       await this.commitTransaction();
-      return new Package(packageSnapShot.uuid, packageSnapShot.title, packageSnapShot.number, packageSnapShot.description)
+      return new Package(packageSnapShot.uid, packageSnapShot.title, packageSnapShot.number, packageSnapShot.description)
     } catch (err) {
       await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);
@@ -44,7 +44,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     }
   }
 
-  async findAll(): Promise<Collection[]> {
+/*   async findAll(): Promise<Collection[]> {
     let packageSnapShot: any;
 
     try {
@@ -60,16 +60,17 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     } finally {
       await this.endSession();
     }
-  }
+  } */
 
-  async find(schema:PackageDto): Promise<Collection> {
+  async find(uid:string): Promise<Collection> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
       await this.startTransaction();
-      packageSnapShot = await this.packageController.find(schema);
+      packageSnapShot = await this.packageController.find(uid);
+      console.log(packageSnapShot)
       await this.commitTransaction();
       return packageSnapShot
     } catch (err) {
@@ -80,16 +81,17 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     }
   }
 
-  async update(schema: PackageDto): Promise<Package> {
+  async update(schema: PackageDto, uid:string): Promise<Package> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
       await this.startTransaction();
-      packageSnapShot = await this.packageController.update(schema);
+      packageSnapShot = await this.packageController.update(schema, uid);
+      console.log(packageSnapShot)
       await this.commitTransaction();
-      return new Package(packageSnapShot.uuid, packageSnapShot.title, packageSnapShot.number, packageSnapShot.description)
+      return new Package(packageSnapShot.uid, packageSnapShot.title, packageSnapShot.number, packageSnapShot.description)
     } catch (err) {
       await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);

@@ -11,11 +11,11 @@ export class PackageRepository implements PackageRepositoryInterface {
     }
 
     async save(schema:PackageDto): Promise<PackageCollection>{
-        const packageSnapshot = await this.database.collection('packgae').insertOne(schema)
+        const packageSnapshot = await this.database.collection('package').insertOne(schema)
         return packageSnapshot.ops[0]
     }
 
-    async findAll(): Promise<Collection[]>{
+/*     async findAll(): Promise<Collection[]>{
         const packageSnapshot = this.database.collection('package').find({})
 
         while (await packageSnapshot.hasNext()) {
@@ -23,19 +23,23 @@ export class PackageRepository implements PackageRepositoryInterface {
 
             return await packageSnapshot.next();
         }
-    }
+    } */
 
-    async find(schema:PackageDto): Promise<Collection>{
+    async find(uid:string): Promise<Collection>{
 
-        const packageSnapshot = await this.database.collection('package').findOne({
-            _id: schema.uid
-        })
+        let query = {_id: uid}
+
+        const packageSnapshot = await this.database.collection('package').findOne(query)
+
+        console.log(packageSnapshot)
 
         return packageSnapshot
     }
 
-    async update(schema: PackageDto): Promise<PackageCollection>{
-        const filter = { _id: schema.uid }
+    async update(schema: PackageDto, uid?:string): Promise<PackageCollection>{
+        uid = schema.uid
+
+        const filter = {_id: uid}
 
         const packageSnapshot = await this.database.collection('package').replaceOne(filter, schema)
 
