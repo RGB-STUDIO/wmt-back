@@ -77,15 +77,14 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     }
   }
 
-  async update(schema: PackageDto): Promise<Package> {
+  async update(schema: PackageDto, uid:string): Promise<Package> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
       await this.startTransaction();
-      packageSnapShot = await this.packageController.update(schema);
-      console.log(packageSnapShot);
+      packageSnapShot = await this.packageController.update(schema, uid);
       await this.commitTransaction();
       return new Package(packageSnapShot.uid,
         packageSnapShot.title,
@@ -99,14 +98,14 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     }
   }
 
-  async delete(schema:PackageDto): Promise<Collection> {
+  async delete(uid:string): Promise<Collection> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
       await this.startTransaction();
-      packageSnapShot = await this.packageController.delete(schema);
+      packageSnapShot = await this.packageController.delete(uid);
       await this.commitTransaction();
       return packageSnapShot;
     } catch (err) {

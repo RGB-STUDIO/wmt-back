@@ -6,6 +6,6 @@ export interface PackageServiceInterface{
   save(schema:PackageDto): Promise<Package>
   findAll():Promise<Collection[]>
   find(uid:string):Promise<Collection>
-  update(schema:PackageDto): Promise<Package>
-  delete(schema:PackageDto):Promise<Collection>
+  update(schema:PackageDto, uid:string): Promise<Package>
+  delete(uid:string):Promise<Collection>
 }

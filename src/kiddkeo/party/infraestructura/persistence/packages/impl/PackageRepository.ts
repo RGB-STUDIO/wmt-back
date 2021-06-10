@@ -18,7 +18,7 @@ export class PackageRepository implements PackageRepositoryInterface {
   }
 
   async findAll(): Promise<Collection[]> {
-    return this.database.collection('package').find({}).toArray();
+    return (await this.database.collection('package').find({}).sort({title: 1}).toArray());
   }
 
   async find(uid:string): Promise<Collection> {
@@ -27,20 +27,30 @@ export class PackageRepository implements PackageRepositoryInterface {
       .findOne({ _id: new ObjectID(uid) });
   }
 
-  async update(schema: PackageDto): Promise<PackageCollection> {
-    const packageSnapshot = await this.database.collection('package').findOneAndUpdate({ _id: schema.uid }, {
+  async update(schema: PackageDto, uid:string): Promise<PackageCollection> {
+/*     const packageSnapshot = await this.database.collection('package')({ _id: schema.uid }, {
       $set: {
         title: schema.title,
         price: schema.price,
         description: schema.description,
       },
     }, { returnOriginal: false });
-    return packageSnapshot.value;
+    return packageSnapshot.value; */
+
+    const packageSnapshot = await this.database.collection('package').updateOne({_id: new ObjectID(uid)}, {
+      $set: {
+        title: schema.title,
+        price: schema.price,
+        description: schema.description
+      }
+    })
+
+    return packageSnapshot.connection
   }
 
-  async delete(schema: PackageDto): Promise<Collection> {
-    const packageSnapshot = await this.database.collection('package').remove({ _id: schema.uid });
+  async delete(uid: string): Promise<Collection> {
+    const packageSnapshot = await this.database.collection('package').deleteOne({ _id: new ObjectID(uid) });
 
-    return packageSnapshot.ops[0];
+    return packageSnapshot.connection;
   }
 }
