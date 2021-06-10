@@ -9,11 +9,11 @@ import { PackageServiceInterface } from './PackageService.interface';
 
 @injectable()
 export class PackageService extends ClientMongo implements PackageServiceInterface {
-  private packageController!: PackageControllerInterface
+  private packageController!: PackageControllerInterface;
 
   constructor(@inject(TYPES.MongoClient) mongoClient: MongoClientProviderInterface, @inject(TYPES.PackageFactory)
   private packageRepository: (database: Db) => PackageControllerInterface) {
-    super(mongoClient)
+    super(mongoClient);
   }
 
   private async Connect() {
@@ -21,7 +21,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     this.packageController = this.packageRepository(this.database);
   }
 
-/*   private async loadReferences(snapShot: any): Promise<Package> {
+  /*   private async loadReferences(snapShot: any): Promise<Package> {
     return new Package(snapShot.uuid, snapShot.title, snapShot.number, snapShot.description)
   }
  */
@@ -35,7 +35,10 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       await this.startTransaction();
       packageSnapShot = await this.packageController.save(schema);
       await this.commitTransaction();
-      return new Package(packageSnapShot.uid, packageSnapShot.title, packageSnapShot.number, packageSnapShot.description)
+      return new Package(packageSnapShot.uid,
+        packageSnapShot.title,
+        packageSnapShot.number,
+        packageSnapShot.description);
     } catch (err) {
       await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);
@@ -44,23 +47,20 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     }
   }
 
-/*   async findAll(): Promise<Collection[]> {
+  async findAll(): Promise<Collection[]> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
-      await this.startTransaction();
       packageSnapShot = await this.packageController.findAll();
-      await this.commitTransaction();
-      return packageSnapShot
+      return packageSnapShot;
     } catch (err) {
-      await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);
     } finally {
       await this.endSession();
     }
-  } */
+  }
 
   async find(uid:string): Promise<Collection> {
     let packageSnapShot: any;
@@ -68,30 +68,29 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
     try {
       await this.Connect();
       await this.startSession();
-      await this.startTransaction();
       packageSnapShot = await this.packageController.find(uid);
-      console.log(packageSnapShot)
-      await this.commitTransaction();
-      return packageSnapShot
+      return packageSnapShot;
     } catch (err) {
-      await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);
     } finally {
       await this.endSession();
     }
   }
 
-  async update(schema: PackageDto, uid:string): Promise<Package> {
+  async update(schema: PackageDto): Promise<Package> {
     let packageSnapShot: any;
 
     try {
       await this.Connect();
       await this.startSession();
       await this.startTransaction();
-      packageSnapShot = await this.packageController.update(schema, uid);
-      console.log(packageSnapShot)
+      packageSnapShot = await this.packageController.update(schema);
+      console.log(packageSnapShot);
       await this.commitTransaction();
-      return new Package(packageSnapShot.uid, packageSnapShot.title, packageSnapShot.number, packageSnapShot.description)
+      return new Package(packageSnapShot.uid,
+        packageSnapShot.title,
+        packageSnapShot.number,
+        packageSnapShot.description);
     } catch (err) {
       await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);
@@ -109,7 +108,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       await this.startTransaction();
       packageSnapShot = await this.packageController.delete(schema);
       await this.commitTransaction();
-      return packageSnapShot
+      return packageSnapShot;
     } catch (err) {
       await this.abortTransaction();
       throw new Error(`Ha ocurrido un error: ${err}`);

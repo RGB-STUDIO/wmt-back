@@ -1,54 +1,46 @@
-import { Collection, Db } from 'mongodb'
-import { PackageRepositoryInterface } from '../PackageRepository.interface'
-import { PackageDto } from '../../../../domain/model/packages/package.dto'
-import { PackageCollection } from '../types/PackageCollection'
+import {
+  Collection, Db, ObjectID,
+} from 'mongodb';
+import { PackageRepositoryInterface } from '../PackageRepository.interface';
+import { PackageDto } from '../../../../domain/model/packages/package.dto';
+import { PackageCollection } from '../types/PackageCollection';
 
 export class PackageRepository implements PackageRepositoryInterface {
-    private database: Db
+  private database: Db;
 
-    constructor(database:Db){
-        this.database = database
-    }
+  constructor(database:Db) {
+    this.database = database;
+  }
 
-    async save(schema:PackageDto): Promise<PackageCollection>{
-        const packageSnapshot = await this.database.collection('package').insertOne(schema)
-        return packageSnapshot.ops[0]
-    }
+  async save(schema:PackageDto): Promise<PackageCollection> {
+    const packageSnapshot = await this.database.collection('package').insertOne(schema);
+    return packageSnapshot.ops[0];
+  }
 
-/*     async findAll(): Promise<Collection[]>{
-        const packageSnapshot = this.database.collection('package').find({})
+  async findAll(): Promise<Collection[]> {
+    return this.database.collection('package').find({}).toArray();
+  }
 
-        while (await packageSnapshot.hasNext()) {
-            console.log(await packageSnapshot.next());
+  async find(uid:string): Promise<Collection> {
+    return this.database
+      .collection('package')
+      .findOne({ _id: new ObjectID(uid) });
+  }
 
-            return await packageSnapshot.next();
-        }
-    } */
+  async update(schema: PackageDto): Promise<PackageCollection> {
+    const packageSnapshot = await this.database.collection('package').findOneAndUpdate({ _id: schema.uid }, {
+      $set: {
+        title: schema.title,
+        price: schema.price,
+        description: schema.description,
+      },
+    }, { returnOriginal: false });
+    return packageSnapshot.value;
+  }
 
-    async find(uid:string): Promise<Collection>{
+  async delete(schema: PackageDto): Promise<Collection> {
+    const packageSnapshot = await this.database.collection('package').remove({ _id: schema.uid });
 
-        let query = {_id: uid}
-
-        const packageSnapshot = await this.database.collection('package').findOne(query)
-
-        console.log(packageSnapshot)
-
-        return packageSnapshot
-    }
-
-    async update(schema: PackageDto, uid?:string): Promise<PackageCollection>{
-        uid = schema.uid
-
-        const filter = {_id: uid}
-
-        const packageSnapshot = await this.database.collection('package').replaceOne(filter, schema)
-
-        return packageSnapshot.ops[0]
-    }
-
-    async delete(schema: PackageDto): Promise<Collection>{
-        const packageSnapshot = await this.database.collection('package').remove({_id: schema.uid})
-
-        return packageSnapshot.ops[0]
-    }
+    return packageSnapshot.ops[0];
+  }
 }
