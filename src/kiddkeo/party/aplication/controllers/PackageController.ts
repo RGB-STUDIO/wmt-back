@@ -16,11 +16,11 @@ export class PackageController implements PackageControllerInterface {
     return this.packageRepository.save(schema);
   }
 
-  async findAll(): Promise<Collection[]> {
+  async findAll(): Promise<PackageCollection[]> {
     return this.packageRepository.findAll();
   }
 
-  async find(uid:string):Promise<Collection> {
+  async find(uid:string):Promise<PackageCollection> {
     return this.packageRepository.find(uid);
   }
 
@@ -28,7 +28,7 @@ export class PackageController implements PackageControllerInterface {
     return this.packageRepository.update(schema);
   }
 
-  async delete(uid:string):Promise<Collection> {
+  async delete(uid:string):Promise<PackageCollection> {
     return this.packageRepository.delete(uid);
   }
 }

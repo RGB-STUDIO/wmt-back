@@ -1,6 +1,6 @@
 export type PackageCollection = {
   _id: string,
-  _title: string,
-  _price: number,
-  _description: string
+  title: string,
+  price: number,
+  description: string
 };

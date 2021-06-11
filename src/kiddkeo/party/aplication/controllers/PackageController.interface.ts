@@ -4,8 +4,8 @@ import { PackageCollection } from '../../infraestructura/persistence/packages/ty
 
 export interface PackageControllerInterface{
   save(schema:PackageDto): Promise<PackageCollection>
-  findAll():Promise<Collection[]>
-  find(uid:string):Promise<Collection>
+  findAll():Promise<PackageCollection[]>
+  find(uid:string):Promise<PackageCollection>
   update(schema:PackageDto):Promise<PackageCollection>
-  delete(uid:string):Promise<Collection>
+  delete(uid:string):Promise<PackageCollection>
 }

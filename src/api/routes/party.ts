@@ -1,9 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
+import { Package } from '@root/kiddkeo/party/domain/model/packages/Package';
 import TYPES from '../../types';
 import container from '../../inversify.config';
 import { PackageServiceInterface } from '../../kiddkeo/party/aplication/service/PackageService.interface';
-import { PackageDto } from '../../kiddkeo/party/domain/model/packages/package.dto';
-
 const router = express.Router();
 
 router.post('/package', async (req:Request, res:Response, next:NextFunction) => {
@@ -24,10 +23,10 @@ router.post('/package', async (req:Request, res:Response, next:NextFunction) => 
 router.get('/package', async (req:Request, res:Response, next: NextFunction) => {
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
   try {
-    const findPackage = await packageService.findAll();
+    const packages = await packageService.findAll();
     res.status(200).json({
       status: 200,
-      package: findPackage,
+      packages: packages.map((pkg:Package) => pkg.toJson()),
     });
   } catch (err) {
     next(err);
@@ -49,17 +48,13 @@ router.get('/package/:id', async (req:Request, res:Response, next: NextFunction)
 });
 
 router.patch('/package', async (req:Request, res:Response, next:NextFunction) => {
-  const { entity } = req.body
-
-  console.log(entity)
-
+  const { entity } = req.body;
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
   try {
     const updatePackage = await packageService.update(entity);
-
     res.status(201).json({
       status: 201,
-      package: 'Se ha actualizado con exito',
+      package: updatePackage.toJson(),
     });
   } catch (err) {
     next(err);
@@ -67,21 +62,20 @@ router.patch('/package', async (req:Request, res:Response, next:NextFunction) =>
 });
 
 router.delete('/package/:id', async (req:Request, res:Response, next: NextFunction) => {
-    const { id } = req.params
+  const { id } = req.params;
 
-    const packageService = container.get<PackageServiceInterface>(TYPES.PackageService)
+  const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
 
-    try{
-        const deletePackage = await packageService.delete(id)
+  try {
+    const deletePackage = await packageService.delete(id);
 
-        res.status(200).json({
-          status: 200,
-          package: 'Se ha eliminado el paquete con éxito'
-        })
-    }
-    catch(err){
-        next(err)
-    }
-})
+    res.status(200).json({
+      status: 200,
+      package: deletePackage.toJson(),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default router;
