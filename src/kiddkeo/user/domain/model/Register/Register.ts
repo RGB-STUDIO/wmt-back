@@ -13,18 +13,26 @@ export class Register {
 
   email:string;
 
+  referrer:string;
+
+  referralCode:string;
+
   constructor(uid:string,
     username:string,
     firstname:string,
     surname:string,
     dateOfBirth:Date,
-    email:string) {
+    email:string,
+    referrer:string,
+    referralCode:string) {
     this.uid = uid;
     this.username = username;
     this.firstname = firstname;
     this.surname = surname;
     this.dateOfBirth = dateOfBirth;
     this.email = email;
+    this.referrer = referrer;
+    this.referralCode = referralCode;
   }
 
   toJson():RegisterDto {
@@ -35,6 +43,8 @@ export class Register {
       surname: this.surname,
       dateOfBirth: this.dateOfBirth,
       email: this.email,
+      referrer: this.referrer,
+      referralCode: this.referralCode,
     };
   }
 }

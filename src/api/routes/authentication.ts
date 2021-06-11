@@ -2,10 +2,11 @@ import express, { Request, Response, NextFunction } from 'express';
 import { RegisterServiceInterface } from '@root/kiddkeo/user/application/Register/Service/RegisterService.interface';
 import TYPES from '@root/types';
 import container from '@root/inversify.config';
+import { validatePost } from '@root/api/routes/validators/autentication.validator';
 
 const router = express.Router();
-
-router.post('/register', async (req:Request, res:Response, next:NextFunction) => {
+// @ts-ignore
+router.post('/register', [validatePost, async (req:Request, res:Response, next:NextFunction) => {
   const { entity } = req.body;
   const registerService = container
     .get<RegisterServiceInterface>(TYPES.RegisterService);
@@ -18,6 +19,6 @@ router.post('/register', async (req:Request, res:Response, next:NextFunction) =>
   } catch (err) {
     next(err);
   }
-});
+}]);
 
 export default router;

@@ -13,6 +13,10 @@ export class PersonRepository implements PersonRepositoryInterface {
     this.database = database;
   }
 
+  async findReferrerCode(code:string):Promise<PersonSchema> {
+    return this.database.collection(COLLECTIONS.PERSON).findOne({ referralCode: code });
+  }
+
   async save(schema: RegisterDto): Promise<PersonSchema> {
     const registerSnapshot = await this.database.collection(COLLECTIONS.PERSON).insertOne(schema);
     return registerSnapshot.ops[0];
