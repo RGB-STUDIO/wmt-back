@@ -3,10 +3,12 @@ import { Package } from '@root/kiddkeo/party/domain/model/packages/Package';
 import TYPES from '../../types';
 import container from '../../inversify.config';
 import { PackageServiceInterface } from '../../kiddkeo/party/aplication/service/PackageService.interface';
+import { validatePackage } from './validators/party.valiadtors'
 
 const router = express.Router();
 
-router.post('/package', async (req:Request, res:Response, next:NextFunction) => {
+//@ts-ignore
+router.post('/package', [validatePackage, async (req:Request, res:Response, next:NextFunction) => {
   const { entity } = req.body;
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
   try {
@@ -19,7 +21,7 @@ router.post('/package', async (req:Request, res:Response, next:NextFunction) => 
   } catch (err) {
     next(err);
   }
-});
+}]);
 
 router.get('/package', async (req:Request, res:Response, next: NextFunction) => {
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
@@ -48,7 +50,8 @@ router.get('/package/:uid', async (req:Request, res:Response, next: NextFunction
   }
 });
 
-router.patch('/package', async (req:Request, res:Response, next:NextFunction) => {
+//@ts-ignore
+router.patch('/package', [validatePackage, async (req:Request, res:Response, next:NextFunction) => {
   const { entity } = req.body;
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
   try {
@@ -60,7 +63,7 @@ router.patch('/package', async (req:Request, res:Response, next:NextFunction) =>
   } catch (err) {
     next(err);
   }
-});
+}]);
 
 router.delete('/package/:uid', async (req:Request, res:Response, next: NextFunction) => {
   const { uid } = req.params;
