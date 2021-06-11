@@ -44,7 +44,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
         packageSnapShot.description);
     } catch (err) {
       await this.abortTransaction();
-      throw new Error(`Ha ocurrido un error: ${err}`);
+      throw err
     } finally {
       await this.endSession();
     }
@@ -62,7 +62,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
         elem.price,
         elem.description));
     } catch (err) {
-      throw new Error(`Ha ocurrido un error: ${err}`);
+      throw err
     } finally {
       await this.endSession();
     }
@@ -81,7 +81,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
         packageSnapShot.price,
         packageSnapShot.description);
     } catch (err) {
-      throw new Error(`Ha ocurrido un error: ${err}`);
+      throw err
     } finally {
       await this.endSession();
     }
@@ -103,7 +103,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
         packageSnapShot.description);
     } catch (err) {
       await this.abortTransaction();
-      throw new Error(`Ha ocurrido un error: ${err}`);
+      throw err
     } finally {
       await this.endSession();
     }
@@ -125,7 +125,7 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
         packageSnapShot.description);
     } catch (err) {
       await this.abortTransaction();
-      throw new Error(`Ha ocurrido un error: ${err}`);
+      throw err
     } finally {
       await this.endSession();
     }

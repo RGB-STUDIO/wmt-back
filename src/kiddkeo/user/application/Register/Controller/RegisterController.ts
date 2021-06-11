@@ -3,7 +3,7 @@ import { Db } from 'mongodb';
 import { PersonRepositoryInterface } from '@root/kiddkeo/user/infraestructura/persistence/person/PersonRepository.interface';
 import { PersonRepository } from '@root/kiddkeo/user/infraestructura/persistence/person/impl/PersonRepository';
 import { RegisterDto } from '@root/kiddkeo/user/domain/model/Register/Register.dto';
-import { PersonCollection } from '@root/kiddkeo/user/infraestructura/persistence/person/types/PersonCollection';
+import { PersonSchema } from '@root/kiddkeo/user/infraestructura/persistence/person/types/PersonSchema';
 import bcrypt from 'bcrypt';
 
 export class RegisterController implements RegisterControllerInterface {
@@ -20,7 +20,7 @@ export class RegisterController implements RegisterControllerInterface {
     this.password = bcrypt.hashSync(password, salt);
   }
 
-  async save(schema:RegisterDto):Promise<PersonCollection> {
+  async save(schema:RegisterDto):Promise<PersonSchema> {
     if (schema.password) {
       this.generatePassword(schema.password);
     } else {

@@ -1,12 +1,23 @@
 import 'reflect-metadata';
-import '../utils/module-alias'
+import '../utils/module-alias';
 import http from 'http';
 import { createHttpTerminator } from 'http-terminator';
+import { normalizePort } from '@utils/helpers';
+import { mainLogger as logger } from '@utils/loggers';
+import { Models } from '@root/Models';
+import container from '@root/inversify.config';
+import { MongoClientProviderInterface } from '@database/ClientMongo';
+import TYPES from '@root/types';
 import app from '../app';
-import {normalizePort} from "@utils/helpers";
-import {mainLogger as logger} from "@utils/loggers";
 
 const port = normalizePort(process.env.PORT || '3000');
+const mongoClient = container.get<MongoClientProviderInterface>(TYPES.MongoClient);
+const createModels = new Models(mongoClient);
+createModels.createModels().then((res:any) => {
+  if (res.numbers > 0) {
+    logger.log('info', `Collections created ${res.numbers}`);
+  }
+});
 
 // Get port from environment and store in Express.
 app.set('port', port);

@@ -3,6 +3,7 @@ import { Package } from '@root/kiddkeo/party/domain/model/packages/Package';
 import TYPES from '../../types';
 import container from '../../inversify.config';
 import { PackageServiceInterface } from '../../kiddkeo/party/aplication/service/PackageService.interface';
+
 const router = express.Router();
 
 router.post('/package', async (req:Request, res:Response, next:NextFunction) => {
@@ -33,11 +34,11 @@ router.get('/package', async (req:Request, res:Response, next: NextFunction) => 
   }
 });
 
-router.get('/package/:id', async (req:Request, res:Response, next: NextFunction) => {
-  const { id } = req.params;
+router.get('/package/:uid', async (req:Request, res:Response, next: NextFunction) => {
+  const { uid } = req.params;
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
   try {
-    const findPackage = await packageService.find(id);
+    const findPackage = await packageService.find(uid);
     res.status(200).json({
       status: 200,
       package: findPackage,
@@ -61,13 +62,13 @@ router.patch('/package', async (req:Request, res:Response, next:NextFunction) =>
   }
 });
 
-router.delete('/package/:id', async (req:Request, res:Response, next: NextFunction) => {
-  const { id } = req.params;
+router.delete('/package/:uid', async (req:Request, res:Response, next: NextFunction) => {
+  const { uid } = req.params;
 
   const packageService = container.get<PackageServiceInterface>(TYPES.PackageService);
 
   try {
-    const deletePackage = await packageService.delete(id);
+    const deletePackage = await packageService.delete(uid);
 
     res.status(200).json({
       status: 200,
