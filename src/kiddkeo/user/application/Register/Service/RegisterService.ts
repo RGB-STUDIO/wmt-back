@@ -13,7 +13,7 @@ export class RegisterService extends ClientMongo implements RegisterServiceInter
   private registerController!:RegisterControllerInterface;
 
   constructor(@inject(TYPES.MongoClient) mongoClient:MongoClientProviderInterface, @inject(TYPES.RegisterFactory)
-    private RegisterFactory:(database:Db)=>RegisterControllerInterface) {
+  private RegisterFactory:(database:Db)=>RegisterControllerInterface) {
     super(mongoClient);
   }
 
@@ -30,15 +30,19 @@ export class RegisterService extends ClientMongo implements RegisterServiceInter
       await this.startTransaction();
       registerSnapShot = await this.registerController.save(schema);
       await this.commitTransaction();
-      return new Register(registerSnapShot.uid,
+      // eslint-disable-next-line no-underscore-dangle
+      return new Register(registerSnapShot._id,
         registerSnapShot.username,
         registerSnapShot.firstname,
         registerSnapShot.surname,
         registerSnapShot.dateOfBirth,
-        registerSnapShot.email);
+        registerSnapShot.email,
+        registerSnapShot.referrer,
+        registerSnapShot.referralCode);
     } catch (err) {
       await this.abortTransaction();
-      throw new Error('soy un error :)');
+      console.log(err)
+      throw err
     } finally {
       await this.endSession();
     }

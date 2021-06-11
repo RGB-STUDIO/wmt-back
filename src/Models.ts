@@ -36,7 +36,10 @@ export class Models extends ClientMongo {
               'username',
               'password',
               'email',
-              'dateOfBirth'],
+              'dateOfBirth',
+              'referralCode',
+              'referrer',
+            ],
             properties: {
               _id: {
                 bsonType: 'objectId',
@@ -63,9 +66,21 @@ export class Models extends ClientMongo {
                 bsonType: 'string',
                 description: 'password is required',
               },
+              email: {
+                bsonType: 'string',
+                description: 'email is required',
+              },
               dateOfBirth: {
                 bsonType: 'date',
                 description: 'dateOfBirth is required',
+              },
+              referralCode: {
+                bsonType: 'string',
+                description: 'referralCode is required',
+              },
+              referrer: {
+                bsonType: 'string',
+                description: 'referrer is required',
               },
               document: {
                 bsonType: 'object',

@@ -3,7 +3,7 @@ import { Phone } from '@root/kiddkeo/user/domain/model/Phones/Phone';
 import { IdentityDocument } from '@root/kiddkeo/user/domain/model/IdentityDocument/IdentityDocument';
 
 export type PersonSchema = {
-  uid:string,
+  _id:string,
   firstname:string,
   secondName:string,
   surname:string,
@@ -12,6 +12,8 @@ export type PersonSchema = {
   password:string,
   username:string,
   address:Address,
+  referralCode:string,
+  referrer:string,
   phones:Phone[],
   document:IdentityDocument,
   dateOfBirth:Date,

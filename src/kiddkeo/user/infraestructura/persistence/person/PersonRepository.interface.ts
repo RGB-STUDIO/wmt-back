@@ -6,4 +6,5 @@ import { DeepPartial } from '@utils/types/deeppartial';
 export interface PersonRepositoryInterface {
   save(schema:RegisterDto):Promise<PersonSchema>
   update(schema:DeepPartial<PersonDto>):Promise<PersonSchema>
+  findReferrerCode(code:string):Promise<PersonSchema>
 }
