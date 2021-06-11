@@ -12,8 +12,7 @@ import { PersonSchema } from '@root/kiddkeo/user/infraestructura/persistence/per
 export class RegisterService extends ClientMongo implements RegisterServiceInterface {
   private registerController!:RegisterControllerInterface;
 
-  constructor(@inject(TYPES.MongoClient) mongoClient:MongoClientProviderInterface,
-    @inject(TYPES.RegisterFactory)
+  constructor(@inject(TYPES.MongoClient) mongoClient:MongoClientProviderInterface, @inject(TYPES.RegisterFactory)
     private RegisterFactory:(database:Db)=>RegisterControllerInterface) {
     super(mongoClient);
   }

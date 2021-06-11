@@ -160,7 +160,7 @@ export class Models extends ClientMongo {
                 description: 'title is required',
               },
               price: {
-                bsonType: 'decimal',
+                bsonType: 'number',
                 description: 'price is required',
               },
               description: {

@@ -9,6 +9,9 @@ const TYPES = {
   RegisterService: Symbol('RegisterService'),
   RegisterController: Symbol('RegisterController'),
   RegisterFactory: Symbol('RegisterFactory'),
+  PackageService: Symbol('PackageService'),
+  PackageController: Symbol('PackageController'),
+  PackageFactory: Symbol('PackageFactory')
 };
 
 export default TYPES;
