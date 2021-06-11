@@ -150,7 +150,7 @@ export class Models extends ClientMongo {
         validator: {
           $jsonSchema: {
             bsonType: 'object',
-            required: ['title', 'price'],
+            required: ['title', 'price', 'activate', 'position'],
             properties: {
               _id: {
                 bsonType: 'objectId',
@@ -166,6 +166,14 @@ export class Models extends ClientMongo {
               description: {
                 bsonType: 'string',
               },
+              activate: {
+                bsonType: 'bool',
+                description: 'activate is required'
+              },
+              position: {
+                bsonType: 'number',
+                description: 'position is required'
+              }
             },
           },
         },

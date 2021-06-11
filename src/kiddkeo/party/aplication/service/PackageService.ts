@@ -41,7 +41,9 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       return new Package(packageSnapShot._id,
         packageSnapShot.title,
         packageSnapShot.price,
-        packageSnapShot.description);
+        packageSnapShot.description,
+        packageSnapShot.activate,
+        packageSnapShot.position);
     } catch (err) {
       await this.abortTransaction();
       throw err
@@ -60,7 +62,9 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       return packageSnapShot.map((elem:PackageCollection) => new Package(elem._id,
         elem.title,
         elem.price,
-        elem.description));
+        elem.description,
+        elem.activate,
+        elem.position));
     } catch (err) {
       throw err
     } finally {
@@ -79,7 +83,9 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       return new Package(packageSnapShot._id,
         packageSnapShot.title,
         packageSnapShot.price,
-        packageSnapShot.description);
+        packageSnapShot.description,
+        packageSnapShot.activate,
+        packageSnapShot.position);
     } catch (err) {
       throw err
     } finally {
@@ -100,7 +106,9 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       return new Package(packageSnapShot._id,
         packageSnapShot.title,
         packageSnapShot.price,
-        packageSnapShot.description);
+        packageSnapShot.description,
+        packageSnapShot.activate,
+        packageSnapShot.position);
     } catch (err) {
       await this.abortTransaction();
       throw err
@@ -122,7 +130,9 @@ export class PackageService extends ClientMongo implements PackageServiceInterfa
       return new Package(packageSnapShot._id,
         packageSnapShot.title,
         packageSnapShot.price,
-        packageSnapShot.description);
+        packageSnapShot.description,
+        packageSnapShot.activate,
+        packageSnapShot.position);
     } catch (err) {
       await this.abortTransaction();
       throw err

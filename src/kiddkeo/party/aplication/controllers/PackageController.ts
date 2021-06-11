@@ -61,7 +61,26 @@ export class PackageController implements PackageControllerInterface {
     if (!schema.uid) {
       throw new Error('uid is undefined');
     }
-    await this.packageRepository.update(schema);
+    
+    try{
+      await this.packageRepository.update(schema);
+    }
+    catch(err){
+      if(err instanceof MongoError){
+        throw new CustomExternalError({
+          message: 'Package not update',
+          errors: [
+            {
+              resource: 'Package',
+              field: 'schema',
+              code: err.code
+            }
+          ]
+        }, {
+          code: 400,
+        })
+      }
+    }
     return this.packageRepository.find(schema.uid);
   }
 

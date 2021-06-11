@@ -19,7 +19,7 @@ export class PackageRepository implements PackageRepositoryInterface {
   }
 
   async findAll(): Promise<PackageCollection[]> {
-    return this.database.collection(COLLECTIONS.PACKAGE).find({}).toArray();
+    return this.database.collection(COLLECTIONS.PACKAGE).find({}).sort({position: 1}).toArray();
   }
 
   async find(uid:string): Promise<PackageCollection> {
@@ -35,6 +35,8 @@ export class PackageRepository implements PackageRepositoryInterface {
           title: schema.title,
           price: schema.price,
           description: schema.description,
+          activate: schema.activate,
+          position: schema.position
         },
       });
   }
