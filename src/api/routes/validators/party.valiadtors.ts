@@ -32,7 +32,7 @@ export const validatePackage = (req: Request, res: Response, next: NextFunction)
       message: 'required fields',
       errors: [{
         resource: 'Party',
-        field: 'body empty',
+        field: 'body fields',
         code: 'unprocessable',
       }],
     }, {
