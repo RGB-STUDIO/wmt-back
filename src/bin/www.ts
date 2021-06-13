@@ -4,20 +4,27 @@ import http from 'http';
 import { createHttpTerminator } from 'http-terminator';
 import { normalizePort } from '@utils/helpers';
 import { mainLogger as logger } from '@utils/loggers';
-import { Models } from '@root/Models';
+import { Schema } from '@database/Schema';
 import container from '@root/inversify.config';
 import { MongoClientProviderInterface } from '@database/ClientMongo';
 import TYPES from '@root/types';
 import app from '../app';
+import {Seeders} from "@database/Seeders";
 
 const port = normalizePort(process.env.PORT || '3000');
 const mongoClient = container.get<MongoClientProviderInterface>(TYPES.MongoClient);
-const createModels = new Models(mongoClient);
+const createModels = new Schema(mongoClient);
+const generateSeeders = new Seeders(mongoClient);
+
 createModels.createModels().then((res:any) => {
   if (res.numbers > 0) {
     logger.log('info', `Collections created ${res.numbers}`);
   }
 });
+
+generateSeeders.generateSeeders().then((res)=>{
+  logger.log('info', res);
+})
 
 // Get port from environment and store in Express.
 app.set('port', port);

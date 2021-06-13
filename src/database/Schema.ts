@@ -2,9 +2,9 @@ import ClientMongo, { MongoClientProviderInterface } from '@database/ClientMongo
 import { Collection } from 'mongodb';
 import TYPES from '@root/types';
 import { inject } from 'inversify';
-import { COLLECTIONS } from '../Contants';
+import { COLLECTIONS } from '../../Contants';
 
-export class Models extends ClientMongo {
+export class Schema extends ClientMongo {
   private collections!:Collection[];
 
   private acc:number = 0;
@@ -38,7 +38,7 @@ export class Models extends ClientMongo {
               'email',
               'dateOfBirth',
               'referralCode',
-              'referrer',
+              'active'
             ],
             properties: {
               _id: {
@@ -81,6 +81,9 @@ export class Models extends ClientMongo {
               referrer: {
                 bsonType: 'string',
                 description: 'referrer is required',
+              },
+              active:{
+                bsonType: 'bool'
               },
               document: {
                 bsonType: 'object',
@@ -147,10 +150,12 @@ export class Models extends ClientMongo {
                   },
                 },
               },
-            },
+            }
           },
         },
       });
+      await this.database.collection(COLLECTIONS.PERSON).createIndex('email',{unique:true})
+      await this.database.collection(COLLECTIONS.PERSON).createIndex('username',{unique:true})
       this.acc += 1;
       return collection;
     }

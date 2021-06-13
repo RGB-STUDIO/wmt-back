@@ -3,25 +3,33 @@ import { AddressDto } from '@root/kiddkeo/user/domain/model/Address/address.dto'
 import { IdentityDocumentDto } from '@root/kiddkeo/user/domain/model/IdentityDocument/identityDocument.dto';
 
 export interface PersonDto {
-  uid:string;
+  uid?:string;
 
   firstname:string;
 
-  secondName:string;
+  secondName?:string;
 
   surname:string;
 
-  secondSurname:string;
+  secondSurname?:string;
 
   email:string;
 
   username:string;
 
-  address:AddressDto;
+  password?:string;
 
-  phones:PhoneDto[];
+  address?:AddressDto;
 
-  document:IdentityDocumentDto;
+  phones?:PhoneDto[];
+
+  document?:IdentityDocumentDto;
+
+  referralCode?:string,
+
+  referrer?:string;
+
+  active:boolean;
 
   dateOfBirth:Date;
 }

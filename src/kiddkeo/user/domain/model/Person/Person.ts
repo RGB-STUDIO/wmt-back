@@ -20,6 +20,12 @@ export class Person {
 
   username:string;
 
+  active:boolean;
+
+  referralCode?:string;
+
+  referrer?:string;
+
   address:Address;
 
   phones:Phone[];
@@ -41,6 +47,9 @@ export class Person {
     phones:Phone[],
     document:IdentityDocument,
     dateOfBirth:Date,
+    active:boolean,
+    referralCode:string,
+    referrer:string
   ) {
     this.uid = uid;
     this.firstname = firstname;
@@ -54,6 +63,9 @@ export class Person {
     this.phones = phones;
     this.document = document;
     this.dateOfBirth = dateOfBirth;
+    this.active=active;
+    this.referralCode=referralCode;
+    this.referrer=referrer;
   }
 
   toJson():PersonDto {
@@ -68,6 +80,9 @@ export class Person {
       address: this.address.toDto(),
       phones: this.phones.map((phone:Phone) => phone.toDto()),
       document: this.document.toDto(),
+      active:this.active,
+      referralCode:this.referralCode,
+      referrer:this.referrer,
       dateOfBirth: this.dateOfBirth,
     };
   }
