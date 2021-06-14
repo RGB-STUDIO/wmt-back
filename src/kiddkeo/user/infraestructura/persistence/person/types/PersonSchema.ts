@@ -15,6 +15,7 @@ export type PersonSchema = {
   referralCode:string,
   referrer:string,
   active:boolean,
+  twoFa:boolean,
   phones:Phone[],
   document:IdentityDocument,
   dateOfBirth:Date,

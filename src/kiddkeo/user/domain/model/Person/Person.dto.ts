@@ -31,5 +31,9 @@ export interface PersonDto {
 
   active:boolean;
 
+  twoFa:boolean;
+
+  gAuth?:boolean;
+
   dateOfBirth:Date;
 }

@@ -38,7 +38,8 @@ export class Seeders extends ClientMongo{
                 email: "thaymerapv@gmail.com",
                 dateOfBirth: new Date(),
                 referralCode:randomUUID(),
-                active:true
+                active:true,
+                twoFa:false
             },
             {
                 firstname: "Carlos",
@@ -48,7 +49,8 @@ export class Seeders extends ClientMongo{
                 email: "carlos@gmail.com",
                 dateOfBirth: new Date(),
                 referralCode:randomUUID(),
-                active:true
+                active:true,
+                twoFa:false
             }
         ];
         const personDummy = await Promise.all<any>(personData.map(async (elem:PersonDto)=>{

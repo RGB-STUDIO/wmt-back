@@ -2,6 +2,11 @@ import { Phone } from '@root/kiddkeo/user/domain/model/Phones/Phone';
 import { Address } from '@root/kiddkeo/user/domain/model/Address/Address';
 import { IdentityDocument } from '@root/kiddkeo/user/domain/model/IdentityDocument/IdentityDocument';
 import { PersonDto } from '@root/kiddkeo/user/domain/model/Person/Person.dto';
+const bcrypt = require('bcrypt');
+import * as crypto from "crypto";
+import jwt from 'jsonwebtoken';
+import {JWT_KEY_SECRET} from "@root/Constants";
+import {Token} from "@root/kiddkeo/user/domain/model/Token/Token";
 
 export class Person {
   uid:string;
@@ -34,6 +39,16 @@ export class Person {
 
   dateOfBirth:Date;
 
+  resetPasswordToken:string | undefined;
+
+  resetPasswordExpires:number | undefined;
+
+  twoFa:boolean;
+
+  gAuth:boolean | undefined;
+
+  gAuthSecret:boolean | undefined;
+
   constructor(
     uid:string,
     firstname:string,
@@ -48,6 +63,7 @@ export class Person {
     document:IdentityDocument,
     dateOfBirth:Date,
     active:boolean,
+    twoFa:boolean,
     referralCode:string,
     referrer:string
   ) {
@@ -64,8 +80,31 @@ export class Person {
     this.document = document;
     this.dateOfBirth = dateOfBirth;
     this.active=active;
+    this.twoFa=twoFa;
     this.referralCode=referralCode;
     this.referrer=referrer;
+  }
+
+  generateJWT(){
+    let payload = {
+      id: this.uid,
+    };
+    return jwt.sign(payload, JWT_KEY_SECRET,{
+      expiresIn: 1440
+    });
+  }
+
+  comparePassword(password:string){
+    return bcrypt.compareSync(password, this.password);
+  }
+
+  generatePasswordReset(){
+    this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    this.resetPasswordExpires = Date.now() + 3600000; //1 hora
+  }
+
+  generateVerificationToken(){
+    return new Token(this.uid,crypto.randomBytes(20).toString('hex'),new Date())
   }
 
   toJson():PersonDto {
@@ -81,6 +120,7 @@ export class Person {
       phones: this.phones.map((phone:Phone) => phone.toDto()),
       document: this.document.toDto(),
       active:this.active,
+      twoFa:this.twoFa,
       referralCode:this.referralCode,
       referrer:this.referrer,
       dateOfBirth: this.dateOfBirth,

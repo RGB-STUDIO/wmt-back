@@ -4,11 +4,8 @@ import { RegisterDto } from '@root/kiddkeo/user/domain/model/Register/Register.d
 import { NextFunction } from 'express';
 
 export const validatePost = (req:Request, res:Response, next:NextFunction) => {
-
-  console.log(req.body)
   // @ts-ignore
   const { entity } = req.body;
-  console.log(entity)
   // @ts-ignore
   if (validateEmptyBody(req.body)
         || !entity

@@ -38,7 +38,8 @@ export class Schema extends ClientMongo {
               'email',
               'dateOfBirth',
               'referralCode',
-              'active'
+              'active',
+              'twoFa'
             ],
             properties: {
               _id: {
@@ -84,6 +85,21 @@ export class Schema extends ClientMongo {
               },
               active:{
                 bsonType: 'bool'
+              },
+              resetPasswordToken:{
+                  bsonType:'string'
+              },
+              resetPasswordExpires:{
+                bsonType:'string'
+              },
+              twoFa:{
+                bsonType:'bool'
+              },
+              gAuth:{
+                bsonType:'string'
+              },
+              gAuthSecret:{
+                bsonType:'string'
               },
               document: {
                 bsonType: 'object',
@@ -162,6 +178,36 @@ export class Schema extends ClientMongo {
     return true;
   }
 
+  private async createCollectionToken():Promise<Collection<any> | Boolean>{
+    if (this.collections.find(
+        (collection:any) => collection.name === COLLECTIONS.TOKEN,
+    ) === undefined){
+      const collection = this.database.createCollection(COLLECTIONS.TOKEN,{
+        validator:{
+          $jsonSchema: {
+            bsonType: 'object',
+            required:['user_id','token','create_at'],
+            properties:{
+              user_id:{
+                bsonType:'objectId'
+              },
+              token:{
+                bsonType:'string'
+              },
+              create_at:{
+                bsonType:'date'
+              }
+            }
+          }
+        }
+      })
+      await this.database.collection(COLLECTIONS.TOKEN).createIndex('user_id',{unique:true})
+      await this.database.collection(COLLECTIONS.TOKEN).createIndex('create_at',{expireAfterSeconds:43200});
+      this.acc += 1;
+      return collection;
+    }
+    return true;
+  }
   private async createCollectionPackage():Promise<Collection<any> | Boolean> {
     if (this.collections.find(
       (collection:any) => collection.name === COLLECTIONS.PACKAGE,
@@ -208,6 +254,7 @@ export class Schema extends ClientMongo {
     try {
       await this.connect();
       await this.createCollectionPerson();
+      await this.createCollectionToken();
       await this.createCollectionPackage();
     } catch (err) {
       throw new Error(err);

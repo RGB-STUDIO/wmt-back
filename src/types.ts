@@ -6,9 +6,6 @@ const TYPES = {
   PersonService: Symbol('PersonService'),
   PersonController: Symbol('PersonController'),
   PersonFactory: Symbol('PersonFactory'),
-  RegisterService: Symbol('RegisterService'),
-  RegisterController: Symbol('RegisterController'),
-  RegisterFactory: Symbol('RegisterFactory'),
   PackageService: Symbol('PackageService'),
   PackageController: Symbol('PackageController'),
   PackageFactory: Symbol('PackageFactory')
