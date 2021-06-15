@@ -2,10 +2,7 @@ import { Phone } from '@root/kiddkeo/user/domain/model/Phones/Phone';
 import { Address } from '@root/kiddkeo/user/domain/model/Address/Address';
 import { IdentityDocument } from '@root/kiddkeo/user/domain/model/IdentityDocument/IdentityDocument';
 import { PersonDto } from '@root/kiddkeo/user/domain/model/Person/Person.dto';
-const bcrypt = require('bcrypt');
 import * as crypto from "crypto";
-import jwt from 'jsonwebtoken';
-import {JWT_KEY_SECRET} from "@root/Constants";
 import {Token} from "@root/kiddkeo/user/domain/model/Token/Token";
 
 export class Person {
@@ -83,19 +80,6 @@ export class Person {
     this.twoFa=twoFa;
     this.referralCode=referralCode;
     this.referrer=referrer;
-  }
-
-  generateJWT(){
-    let payload = {
-      id: this.uid,
-    };
-    return jwt.sign(payload, JWT_KEY_SECRET,{
-      expiresIn: 1440
-    });
-  }
-
-  comparePassword(password:string){
-    return bcrypt.compareSync(password, this.password);
   }
 
   generatePasswordReset(){

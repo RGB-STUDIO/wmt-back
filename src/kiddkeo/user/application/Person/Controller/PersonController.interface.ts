@@ -5,7 +5,6 @@ import {RegisterDto} from "@root/kiddkeo/user/domain/model/Register/Register.dto
 
 export interface PersonControllerInterface{
   find(uid:string):Promise<PersonSchema>;
-  save(schema:RegisterDto):Promise<PersonSchema>;
   update(schema:DeepPartial<PersonDto>):Promise<PersonSchema>;
   softDelete(uid:string):Promise<PersonSchema>;
   delete(uid:string):Promise<PersonSchema>;

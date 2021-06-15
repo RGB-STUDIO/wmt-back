@@ -7,9 +7,6 @@ import { PersonDto } from '@root/kiddkeo/user/domain/model/Person/Person.dto';
 import { DeepPartial } from '@utils/types/deeppartial';
 import { PersonControllerInterface } from '@root/kiddkeo/user/application/Person/Controller/PersonController.interface';
 import { Db } from 'mongodb';
-import {RegisterDto} from "@root/kiddkeo/user/domain/model/Register/Register.dto";
-import {Register} from "@root/kiddkeo/user/domain/model/Register/Register";
-import {PersonSchema} from "@root/kiddkeo/user/infraestructura/persistence/person/types/PersonSchema";
 
 export class PersonService extends ClientMongo implements PersonServiceInterface {
   private personController!:PersonControllerInterface;
@@ -26,32 +23,17 @@ export class PersonService extends ClientMongo implements PersonServiceInterface
   }
 
   async find(uid: string): Promise<Person> {
-  return {} as Person;
-  }
-
-  async save(schema: RegisterDto): Promise<Register> {
-    let registerSnapShot:PersonSchema;
-    try {
-      await this.connect();
-      await this.startSession();
-      await this.startTransaction();
-      registerSnapShot = await this.personController.save(schema);
-      await this.commitTransaction();
-      // eslint-disable-next-line no-underscore-dangle
-      return new Register(registerSnapShot._id,
-          registerSnapShot.username,
-          registerSnapShot.firstname,
-          registerSnapShot.surname,
-          registerSnapShot.dateOfBirth,
-          registerSnapShot.email,
-          registerSnapShot.referrer,
-          registerSnapShot.referralCode);
-    } catch (err) {
-      await this.abortTransaction();
+    await this.connect();
+    await this.startSession();
+    try{
+      const personSnapshot = await this.personController.find(uid);
+      console.log(personSnapshot)
+    }catch (err) {
       throw err
-    } finally {
+    }finally {
       await this.endSession();
     }
+  return {} as Person;
   }
 
   async update(schema: DeepPartial<PersonDto>): Promise<Person> {

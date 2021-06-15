@@ -39,6 +39,7 @@ export class Seeders extends ClientMongo{
                 dateOfBirth: new Date(),
                 referralCode:randomUUID(),
                 active:true,
+                verified:false,
                 twoFa:false
             },
             {
@@ -50,6 +51,7 @@ export class Seeders extends ClientMongo{
                 dateOfBirth: new Date(),
                 referralCode:randomUUID(),
                 active:true,
+                verified:false,
                 twoFa:false
             }
         ];

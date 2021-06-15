@@ -39,6 +39,7 @@ export class Schema extends ClientMongo {
               'dateOfBirth',
               'referralCode',
               'active',
+              'verified',
               'twoFa'
             ],
             properties: {
@@ -82,6 +83,9 @@ export class Schema extends ClientMongo {
               referrer: {
                 bsonType: 'string',
                 description: 'referrer is required',
+              },
+              verified:{
+                bsonType: 'bool'
               },
               active:{
                 bsonType: 'bool'

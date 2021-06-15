@@ -5,7 +5,7 @@ import { DeepPartial } from '@utils/types/deeppartial';
 
 export interface PersonRepositoryInterface {
   find(uid:string):Promise<PersonSchema>;
-  findByEmails(email:string):Promise<Boolean>;
+  findByEmail(email:string):Promise<PersonSchema>;
   findByUsername(username:string):Promise<Boolean>;
   save(schema:RegisterDto):Promise<PersonSchema>;
   update(schema:DeepPartial<PersonDto>):Promise<PersonSchema>;
