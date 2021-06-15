@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import ClientMongo, { MongoClientProviderInterface } from '@database/ClientMongo';
 import TYPES from '@root/types';
 import { Db } from 'mongodb';
-import { PackageCollection } from '@root/kiddkeo/party/infraestructura/persistence/packages/types/PackageCollection';
+import { PackageCollection } from '@root/kiddkeo/admin/infraestructura/persistence/packages/types/PackageCollection';
 import { PackageControllerInterface } from '../controllers/PackageController.interface';
 import { Package } from '../../domain/model/packages/Package';
 import { PackageDto } from '../../domain/model/packages/package.dto';

@@ -1,9 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { Package } from '@root/kiddkeo/party/domain/model/packages/Package';
+import { Package } from '@root/kiddkeo/admin/domain/model/packages/Package';
 import TYPES from '../../types';
 import container from '../../inversify.config';
-import { PackageServiceInterface } from '../../kiddkeo/party/aplication/service/PackageService.interface';
-import { validatePackage } from './validators/party.valiadtors'
+import { PackageServiceInterface } from '../../kiddkeo/admin/aplication/service/PackageService.interface';
+import { validatePackage } from './validators/admin.valiadtors'
 
 const router = express.Router();
 

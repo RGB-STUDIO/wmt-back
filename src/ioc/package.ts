@@ -1,12 +1,12 @@
 import { ContainerModule, interfaces } from 'inversify';
 import serviceFactoryFunction from '@root/ioc/utils/serviceFactory';
-import { PackageControllerInterface } from '../kiddkeo/party/aplication/controllers/PackageController.interface';
-import { PackageController } from '../kiddkeo/party/aplication/controllers/PackageController';
+import { PackageControllerInterface } from '../kiddkeo/admin/aplication/controllers/PackageController.interface';
+import { PackageController } from '../kiddkeo/admin/aplication/controllers/PackageController';
 import TYPES from '../types';
-import { PackageService } from '../kiddkeo/party/aplication/service/PackageService';
-import { PackageServiceInterface } from '../kiddkeo/party/aplication/service/PackageService.interface';
+import { PackageService } from '../kiddkeo/admin/aplication/service/PackageService';
+import { PackageServiceInterface } from '../kiddkeo/admin/aplication/service/PackageService.interface';
 
-const party = new ContainerModule((bind:interfaces.Bind) => {
+const Package = new ContainerModule((bind:interfaces.Bind) => {
   bind<PackageServiceInterface>(TYPES.PackageService).to(PackageService);
   bind<interfaces.Newable<PackageControllerInterface>>(TYPES.PackageController)
     .toConstructor(PackageController);
@@ -16,4 +16,4 @@ const party = new ContainerModule((bind:interfaces.Bind) => {
   );
 });
 
-export default party;
+export default Package;

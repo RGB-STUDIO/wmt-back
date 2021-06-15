@@ -1,6 +1,6 @@
 import { CustomExternalError } from '@utils/CustomExternalError';
 import { validateEmptyBody, validateFieldsInBody } from '@utils/helpers';
-import { PackageDto } from '../../../kiddkeo/party/domain/model/packages/package.dto'
+import { PackageDto } from '../../../kiddkeo/admin/domain/model/packages/package.dto'
 import { NextFunction } from 'express';
 
 export const validatePackage = (req: Request, res: Response, next: NextFunction) => {
@@ -31,7 +31,7 @@ export const validatePackage = (req: Request, res: Response, next: NextFunction)
     throw new CustomExternalError({
       message: 'required fields',
       errors: [{
-        resource: 'Party',
+        resource: 'admin',
         field: 'body fields',
         code: 'unprocessable',
       }],

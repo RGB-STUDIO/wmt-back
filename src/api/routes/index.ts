@@ -4,7 +4,7 @@ import express, {
 import { mainLogger } from '@utils/loggers';
 import { CustomExternalError } from '@utils/CustomExternalError';
 import authentication from '@root/api/routes/authentication';
-import party from './party'
+import admin from './admin'
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get('/', (req:Request, res:Response) => {
 });
 
 router.use('/authentication', authentication);
-router.use('/party', party);
+router.use('/admin', admin);
 
 router.get('*', (req:Request, res:Response) => {
   res.status(404).json({
