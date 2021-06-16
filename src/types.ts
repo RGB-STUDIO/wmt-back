@@ -3,6 +3,7 @@ const TYPES = {
   ProcessEnvironment: Symbol('ProcessEnvironment'),
   EnvService: Symbol('EnvService'),
   MongoClient: Symbol('PgPoolManager'),
+  MailerService:Symbol('MailerService'),
   AuthenticationService: Symbol('AuthenticationService'),
   AuthenticationController: Symbol('AuthenticationController'),
   AuthenticationFactory: Symbol('AuthenticationFactory'),

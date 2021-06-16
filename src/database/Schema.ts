@@ -192,11 +192,16 @@ export class Schema extends ClientMongo {
             bsonType: 'object',
             required:['user_id','token','create_at'],
             properties:{
+              _id: {
+                bsonType: 'objectId',
+              },
               user_id:{
-                bsonType:'objectId'
+                bsonType:'objectId',
+                description:'user_id is required'
               },
               token:{
-                bsonType:'string'
+                bsonType:'string',
+                description:'token is required'
               },
               create_at:{
                 bsonType:'date'
@@ -205,13 +210,14 @@ export class Schema extends ClientMongo {
           }
         }
       })
-      await this.database.collection(COLLECTIONS.TOKEN).createIndex('user_id',{unique:true})
+      // await this.database.collection(COLLECTIONS.TOKEN).createIndex('user_id',{unique:true})
       await this.database.collection(COLLECTIONS.TOKEN).createIndex('create_at',{expireAfterSeconds:43200});
       this.acc += 1;
       return collection;
     }
     return true;
   }
+
   private async createCollectionPackage():Promise<Collection<any> | Boolean> {
     if (this.collections.find(
       (collection:any) => collection.name === COLLECTIONS.PACKAGE,

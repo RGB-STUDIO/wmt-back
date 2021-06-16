@@ -31,9 +31,17 @@ export interface PersonDto {
 
   active:boolean;
 
+  verified:boolean;
+
   twoFa:boolean;
 
   gAuth?:boolean;
+
+  gAuthSecret?:string,
+
+  resetPasswordToken?:string,
+
+  resetPasswordExpires?:string,
 
   dateOfBirth:Date;
 }

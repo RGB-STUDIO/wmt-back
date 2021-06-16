@@ -1,5 +1,7 @@
+import {ObjectId} from "mongodb";
+
 export interface TokenDto {
-    userId:string,
+    user_id:ObjectId,
     token:string,
-    created_at:Date
+    created_at:string
 }

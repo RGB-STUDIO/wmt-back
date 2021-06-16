@@ -2,17 +2,20 @@ import {Db} from "mongodb";
 import {PersonRepository} from "@root/kiddkeo/user/infraestructura/persistence/person/impl/PersonRepository";
 import {PersonRepositoryInterface} from "@root/kiddkeo/user/infraestructura/persistence/person/PersonRepository.interface";
 import {AuthenticationControllerInterface} from "@root/kiddkeo/user/application/Autentication/controller/AuthenticationController.interface";
-import {Login} from "@root/kiddkeo/user/domain/model/Login/Login";
-import {Register} from "@root/kiddkeo/user/domain/model/Register/Register";
 import {CustomExternalError} from "@utils/CustomExternalError";
-import {RegisterDto} from "@root/kiddkeo/user/domain/model/Register/Register.dto";
+import {RegisterDto} from "@root/kiddkeo/user/domain/model/Person/Register.dto";
 import bcrypt from "bcrypt";
 import {randomUUID} from "crypto";
 import {injectable} from "inversify";
+import {TokenRepository} from "@root/kiddkeo/user/infraestructura/persistence/token/impl/TokenRepository";
+import {TokenRepositoryInterface} from "@root/kiddkeo/user/infraestructura/persistence/token/TokenRepository.interface";
+import {Person} from "@root/kiddkeo/user/domain/model/Person/Person";
 
 @injectable()
 export class AuthenticationController implements AuthenticationControllerInterface{
     private personRepository:PersonRepositoryInterface;
+
+    private tokenRepository:TokenRepositoryInterface;
 
     private password!:string;
 
@@ -20,6 +23,7 @@ export class AuthenticationController implements AuthenticationControllerInterfa
 
     constructor(database:Db) {
         this.personRepository = new PersonRepository(database);
+        this.tokenRepository = new TokenRepository(database)
     }
 
     private async generatePassword(password:string) {
@@ -32,7 +36,7 @@ export class AuthenticationController implements AuthenticationControllerInterfa
     }
 
 
-    async login(email: string, password: string): Promise<Login> {
+    async login(email: string, password: string): Promise<Person> {
        const personSnapshot = await this.personRepository.findByEmail(email);
        if (personSnapshot === null){
            throw new CustomExternalError({
@@ -59,8 +63,24 @@ export class AuthenticationController implements AuthenticationControllerInterfa
                 code: 400,
             });
         }
-      const userLoggedIn = new Login(personSnapshot._id,personSnapshot.email,personSnapshot.username,personSnapshot.password)
-      const verifyPwd=await userLoggedIn.comparePassword(password)
+     const person= new Person(personSnapshot._id,
+            personSnapshot.firstname,
+            personSnapshot.secondName,
+            personSnapshot.surname,
+            personSnapshot.secondSurname,
+            personSnapshot.email,
+            personSnapshot.password,
+            personSnapshot.username,
+            personSnapshot.address,
+            personSnapshot.phones,
+            personSnapshot.document,
+            personSnapshot.dateOfBirth,
+            personSnapshot.active,
+            personSnapshot.verified,
+            personSnapshot.twoFa,
+            personSnapshot.referralCode,
+            personSnapshot.referrer);
+      const verifyPwd=await person.comparePassword(password)
         if (!verifyPwd){
            throw new CustomExternalError({
                message: 'Incorrect Data',
@@ -73,11 +93,11 @@ export class AuthenticationController implements AuthenticationControllerInterfa
                code: 400,
            });
        }
-      userLoggedIn.generateJWT();
-      return userLoggedIn
+      person.generateJWT();
+      return person
     }
 
-    async register(schema:RegisterDto): Promise<Register> {
+    async register(schema:RegisterDto): Promise<Person> {
         if (!schema.password) {
             throw new CustomExternalError({
                 message: 'Password in entity is undefined',
@@ -113,14 +133,29 @@ export class AuthenticationController implements AuthenticationControllerInterfa
                 referralCode: this.referralCode,
                 dateOfBirth: new Date(schema.dateOfBirth),
             });
-            return new Register(personSnapshot._id,
-                personSnapshot.username,
+
+            const person= new Person(personSnapshot._id,
                 personSnapshot.firstname,
+                personSnapshot.secondName,
                 personSnapshot.surname,
-                personSnapshot.dateOfBirth,
+                personSnapshot.secondSurname,
                 personSnapshot.email,
-                personSnapshot.referrer,
-                personSnapshot.referralCode);
+                personSnapshot.password,
+                personSnapshot.username,
+                personSnapshot.address,
+                personSnapshot.phones,
+                personSnapshot.document,
+                personSnapshot.dateOfBirth,
+                personSnapshot.active,
+                personSnapshot.verified,
+                personSnapshot.twoFa,
+                personSnapshot.referralCode,
+                personSnapshot.referrer);
+
+             person.generateVerificationToken()
+            await this.tokenRepository.save(person.tokenVerified.toDto())
+            return person;
+
         }catch (err) {
             if (err.name==='MongoError'){
                 if (err.code === 11000 && err.keyPattern.email === 1){
@@ -150,5 +185,24 @@ export class AuthenticationController implements AuthenticationControllerInterfa
             }
             throw err
         }
+    }
+    async verifyUser(token:string):Promise<Person>{
+       const t = await this.tokenRepository.findByToken(token);
+        if (t === null) {
+            // eslint-disable-next-line @typescript-eslint/no-throw-literal
+            throw new CustomExternalError({
+                message: 'token not fount',
+                errors: [{
+                    resource: 'Authentication',
+                    field: 'schema',
+                    code: 'unprocessable',
+                }],
+            }, {
+                code: 400,
+            });
+        }
+
+        const user = this.personRepository.update({});
+        return {} as Person;
     }
 }

@@ -11,6 +11,10 @@ export class TokenRepository implements TokenRepositoryInterface{
         this.database = database;
     }
 
+    async findByToken(token:string):Promise<TokenSchema>{
+       return await this.database.collection(COLLECTIONS.TOKEN).findOne({token:token})
+    }
+
     async save(schema:TokenDto): Promise<TokenSchema> {
          const tokenSnapshot=await this.database.collection(COLLECTIONS.TOKEN).insertOne(schema);
         return tokenSnapshot.ops[0]

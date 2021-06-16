@@ -4,7 +4,7 @@ import {PersonDto} from '@root/kiddkeo/user/domain/model/Person/Person.dto';
 import {DeepPartial} from '@utils/types/deeppartial';
 import bcrypt from "bcrypt";
 import {randomUUID} from "crypto";
-import {RegisterDto} from "@root/kiddkeo/user/domain/model/Register/Register.dto";
+import {RegisterDto} from "@root/kiddkeo/user/domain/model/Person/Register.dto";
 import {CustomExternalError} from "@utils/CustomExternalError";
 import {PersonRepositoryInterface} from "@root/kiddkeo/user/infraestructura/persistence/person/PersonRepository.interface";
 import {Db} from "mongodb";

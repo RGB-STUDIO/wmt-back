@@ -1,8 +1,8 @@
-import {Login} from "@root/kiddkeo/user/domain/model/Login/Login";
-import {Register} from "@root/kiddkeo/user/domain/model/Register/Register";
-import {RegisterDto} from "@root/kiddkeo/user/domain/model/Register/Register.dto";
+import {RegisterDto} from "@root/kiddkeo/user/domain/model/Person/Register.dto";
+import {Person} from "@root/kiddkeo/user/domain/model/Person/Person";
 
 export interface AuthenticationServiceInterface{
-    login(email:string,password:string):Promise<Login>
-    register(schema:RegisterDto):Promise<Register>
+    login(email:string,password:string):Promise<Person>
+    register(schema:RegisterDto):Promise<Person>
+    verifyUser(token:string):Promise<Person>
 }

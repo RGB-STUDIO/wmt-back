@@ -4,6 +4,12 @@ import { IdentityDocument } from '@root/kiddkeo/user/domain/model/IdentityDocume
 import { PersonDto } from '@root/kiddkeo/user/domain/model/Person/Person.dto';
 import * as crypto from "crypto";
 import {Token} from "@root/kiddkeo/user/domain/model/Token/Token";
+import {ObjectID} from "mongodb";
+import {JWT_KEY_SECRET} from "@root/Constants";
+import jwt from 'jsonwebtoken';
+import {RegisterDto} from "@root/kiddkeo/user/domain/model/Person/Register.dto";
+import {LoginDto} from "@root/kiddkeo/user/domain/model/Person/Login.dto";
+const bcrypt = require('bcrypt');
 
 export class Person {
   uid:string;
@@ -40,7 +46,13 @@ export class Person {
 
   resetPasswordExpires:number | undefined;
 
+  token!:string;
+
+  tokenVerified!:Token;
+
   twoFa:boolean;
+
+  verified:boolean;
 
   gAuth:boolean | undefined;
 
@@ -60,6 +72,7 @@ export class Person {
     document:IdentityDocument,
     dateOfBirth:Date,
     active:boolean,
+    verified:boolean,
     twoFa:boolean,
     referralCode:string,
     referrer:string
@@ -77,10 +90,26 @@ export class Person {
     this.document = document;
     this.dateOfBirth = dateOfBirth;
     this.active=active;
+    this.verified=verified,
     this.twoFa=twoFa;
     this.referralCode=referralCode;
     this.referrer=referrer;
   }
+
+  generateJWT(){
+    let payload = {
+      id: this.uid,
+      email:this.email
+    };
+    this.token = jwt.sign(payload, JWT_KEY_SECRET,{
+      expiresIn: 1440
+    });
+  }
+
+  async comparePassword(password:string){
+    return await bcrypt.compare(password,this.password)
+  }
+
 
   generatePasswordReset(){
     this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
@@ -88,7 +117,7 @@ export class Person {
   }
 
   generateVerificationToken(){
-    return new Token(this.uid,crypto.randomBytes(20).toString('hex'),new Date())
+    this.tokenVerified = new Token(new ObjectID(this.uid),crypto.randomBytes(20).toString('hex'),new Date().toISOString())
   }
 
   toJson():PersonDto {
@@ -107,7 +136,29 @@ export class Person {
       twoFa:this.twoFa,
       referralCode:this.referralCode,
       referrer:this.referrer,
+      verified:this.verified,
       dateOfBirth: this.dateOfBirth,
     };
+  }
+
+  toRegisterDto():RegisterDto{
+    return {
+      uid: this.uid,
+      username: this.username,
+      firstname: this.firstname,
+      surname: this.surname,
+      dateOfBirth: this.dateOfBirth,
+      email: this.email,
+      referrer: this.referrer ? this.referrer : '',
+      referralCode: this.referralCode,
+    }
+  }
+
+  toLoginDto():LoginDto{
+    return {
+      uid:this.uid,
+      email:this.email,
+      token:this.token
+    }
   }
 }

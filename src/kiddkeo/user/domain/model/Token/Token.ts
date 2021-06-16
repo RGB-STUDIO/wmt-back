@@ -1,10 +1,11 @@
 import {TokenDto} from "@root/kiddkeo/user/domain/model/Token/Token.dto";
+import {ObjectId} from "mongodb";
 
 export class Token {
-    userId:string;
+    userId:ObjectId;
     token:string;
-    createAt:Date;
-    constructor(userId:string,token:string,createAt:Date) {
+    createAt:string;
+    constructor(userId:ObjectId,token:string,createAt:string) {
     this.userId=userId;
     this.token=token;
     this.createAt=createAt;
@@ -12,7 +13,7 @@ export class Token {
 
     toDto():TokenDto{
         return {
-            userId:this.userId,
+            user_id:this.userId,
             token:this.token,
             created_at:this.createAt
         }

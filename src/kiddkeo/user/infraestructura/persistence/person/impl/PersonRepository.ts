@@ -1,10 +1,11 @@
 import {Db, ObjectID} from 'mongodb';
 import {PersonRepositoryInterface} from '@root/kiddkeo/user/infraestructura/persistence/person/PersonRepository.interface';
-import {RegisterDto} from '@root/kiddkeo/user/domain/model/Register/Register.dto';
+import {RegisterDto} from '@root/kiddkeo/user/domain/model/Person/Register.dto';
 import {PersonSchema} from '@root/kiddkeo/user/infraestructura/persistence/person/types/PersonSchema';
 import {PersonDto} from '@root/kiddkeo/user/domain/model/Person/Person.dto';
 import {DeepPartial} from '@utils/types/deeppartial';
 import {COLLECTIONS} from '@root/Constants';
+import {shiftIterator} from "superstruct/lib/utils";
 
 export class PersonRepository implements PersonRepositoryInterface {
   private database:Db;
@@ -37,6 +38,29 @@ export class PersonRepository implements PersonRepositoryInterface {
   }
 
   async update(schema: DeepPartial<PersonDto>): Promise<PersonSchema> {
+      await this.database.collection(COLLECTIONS.PERSON).updateOne({_id:schema.uid},{
+          $set:{
+              firstname:schema.firstname,
+              secondName:schema.secondName,
+              surname:schema.surname,
+              secondSurname:schema.secondSurname,
+              username:schema.username,
+              email:schema.email,
+              dateOfBirth:schema.dateOfBirth,
+              verified:schema.verified,
+              active:schema.active,
+              resetPasswordToken:schema.resetPasswordToken,
+              resetPasswordExpires:schema.resetPasswordExpires,
+              twoFa:schema.twoFa,
+              gAuth:schema.gAuth,
+              gAuthSecret:schema.gAuthSecret,
+              document:{
+                  documentType:schema.document?.documentType,
+                  document:schema.document?.document
+              }
+
+          }
+      })
     return {} as PersonSchema;
   }
 

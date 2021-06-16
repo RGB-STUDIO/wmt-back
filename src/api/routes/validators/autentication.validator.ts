@@ -1,6 +1,6 @@
 import { CustomExternalError } from '@utils/CustomExternalError';
 import { validateEmptyBody, validateFieldsInBody } from '@utils/helpers';
-import { RegisterDto } from '@root/kiddkeo/user/domain/model/Register/Register.dto';
+import { RegisterDto } from '@root/kiddkeo/user/domain/model/Person/Register.dto';
 import { NextFunction } from 'express';
 
 export const validatePost = (req:Request, res:Response, next:NextFunction) => {

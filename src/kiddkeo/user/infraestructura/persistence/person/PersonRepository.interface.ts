@@ -1,4 +1,4 @@
-import { RegisterDto } from '@root/kiddkeo/user/domain/model/Register/Register.dto';
+import { RegisterDto } from '@root/kiddkeo/user/domain/model/Person/Register.dto';
 import { PersonSchema } from '@root/kiddkeo/user/infraestructura/persistence/person/types/PersonSchema';
 import { PersonDto } from '@root/kiddkeo/user/domain/model/Person/Person.dto';
 import { DeepPartial } from '@utils/types/deeppartial';
